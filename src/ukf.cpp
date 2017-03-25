@@ -44,13 +44,6 @@ UKF::UKF() {
   // Radar measurement noise standard deviation radius change in m/s
   std_radrd_ = 0.3;
 
-  /**
-  TODO:
-  Complete the initialization. See ukf.h for other member properties.
-
-  Hint: one or more values initialized above might be wildly off...
-  */
-
   n_x_ = 5 ;
 
   ///* Augmented state dimension
@@ -135,10 +128,8 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
   }
 
   double dt = (meas_package.timestamp_ - time_us_) / 1000000.0;	//dt - expressed in seconds
- // if (dt > 0.001f) {
-    time_us_ = meas_package.timestamp_;
-    Prediction(dt);
-  //}
+  time_us_ = meas_package.timestamp_;
+  Prediction(dt);
 
   if (meas_package.sensor_type_ == MeasurementPackage::RADAR) {
     UpdateRadar(meas_package);
@@ -154,12 +145,7 @@ void UKF::ProcessMeasurement(MeasurementPackage meas_package) {
  * measurement and this one.
  */
 void UKF::Prediction(double delta_t) {
-  /**
-  TODO:
 
-  Complete this function! Estimate the object's location. Modify the state
-  vector, x_. Predict sigma points, the state, and the state covariance matrix.
-  */
   generateSigmaPoints();
   augmentSigmaPoints();
   predictSigmaPoints(delta_t);
@@ -199,7 +185,6 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   }
 
   //calculate measurement covariance matrix S
-
   S_.setZero();
   for (int i =0; i < Zsig.cols(); i++) {
     MatrixXd col = Zsig.col(i)-z_pred_;
@@ -207,7 +192,6 @@ void UKF::UpdateLidar(MeasurementPackage meas_package) {
   }
   // Adding Measurement covariance
   S_ += R_;
-
 
   //calculate cross correlation matrix
   Tc = Tc_laser_;

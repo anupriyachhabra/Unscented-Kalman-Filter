@@ -74,6 +74,50 @@ public:
   ///* the current NIS for laser
   double NIS_laser_;
 
+  //* Measurement space dimension
+  int n_z_;
+
+  //mean predicted measurement
+  VectorXd z_pred_;
+
+  //measurement covariance matrix S
+  MatrixXd S_;
+
+  //measurement covariance
+  MatrixXd R_;
+
+  MatrixXd R_laser_;
+
+  MatrixXd R_radar_;
+
+  MatrixXd Tc;
+
+  MatrixXd Tc_laser_;
+
+  MatrixXd Tc_radar_;
+
+  MatrixXd Xsig;
+
+  MatrixXd Xsig_aug;
+
+  VectorXd stochaistic;
+  VectorXd deterministic;
+
+  MatrixXd Zsig_laser;
+  MatrixXd Zsig_radar;
+
+  MatrixXd S_laser;
+  MatrixXd S_radar;
+
+  //create augmented mean vector
+  VectorXd x_aug;
+
+  //create augmented state covariance
+  MatrixXd P_aug;
+
+  VectorXd z_pred_laser;
+  VectorXd z_pred_radar;
+
   /**
    * Constructor
    */
@@ -108,6 +152,17 @@ public:
    * @param meas_package The measurement at k+1
    */
   void UpdateRadar(MeasurementPackage meas_package);
+
+  Eigen::VectorXd convertToCartesian(Eigen::VectorXd matrix);
+
+  void generateSigmaPoints();
+
+  void predictSigmaPoints(double d);
+
+  void augmentSigmaPoints();
+
+  void predictMeanAndCovariance();
+
 };
 
 #endif /* UKF_H */
